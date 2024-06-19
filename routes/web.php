@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\HTTP\Response;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -66,12 +66,20 @@ $tasks = [
     ),
 ];
 
-Route::get('/',function() use($tasks){
+Route::get('/',function(){
+    return redirect()->route('tasks.index');
+});
+
+Route::get('/tasks',function() use($tasks){
     return view('index',[
         'tasks'=>$tasks
     ]);
 })->name('tasks.index');
 
-Route::get('/{id}',function($id){
-   return "One Single Task";
-})->name('show');
+Route::get('/task/{id}',function($id) use($tasks){
+   $task = collect($tasks)->firstWhere('id',$id);
+   if(!$task){
+  abort(Response::HTTP_NOT_FOUND);
+   }
+   return view('show',['task'=>$task]);
+})->name('task.show');

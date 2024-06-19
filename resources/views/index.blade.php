@@ -2,7 +2,7 @@
 
 @forelse ($tasks as $task)
    
-    <p> <a href={{route('show',['id'=>$task->id])}}>{{$task->title}}</a></p>
+    <p> <a href={{route('task.show',['id'=>$task->id])}}>{{$task->title}}</a></p>
 @empty
     
 @endforelse
